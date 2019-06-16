@@ -16,4 +16,9 @@ public class UserServiceImpl implements UserService {
     public User selUserById(Integer id) {
         return userMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public Boolean saveUser(User user) {
+        return userMapper.insert(user) > 0 ? true : false;
+    }
 }
