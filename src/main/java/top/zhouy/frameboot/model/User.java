@@ -1,6 +1,16 @@
 package top.zhouy.frameboot.model;
 
-public class User {
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import top.zhouy.frameboot.enums.Role;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class User{
     private Integer id;
 
     private String name;
@@ -8,6 +18,8 @@ public class User {
     private String password;
 
     private String phone;
+
+    private Role role;
 
     public Integer getId() {
         return id;
@@ -25,12 +37,12 @@ public class User {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getPhone() {
@@ -39,5 +51,13 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone == null ? null : phone.trim();
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
