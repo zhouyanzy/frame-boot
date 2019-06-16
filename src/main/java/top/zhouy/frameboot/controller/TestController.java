@@ -1,6 +1,8 @@
 package top.zhouy.frameboot.controller;
 
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +22,8 @@ public class TestController {
     @Autowired
     private UserService userService;
 
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
+
     @ApiOperation("根据主键id，获取用户信息")
     @ApiImplicitParam(name = "id", value = "主键id", paramType = "query" , dataType = "Integer")
     @ApiResponses({
@@ -28,6 +32,7 @@ public class TestController {
     })
     @GetMapping("/getUser")
     public User getUser(@ApiParam(value = "主键id") Integer id){
+        log.info("查询用户开始");
         return userService.selUserById(id);
     }
 
