@@ -5,14 +5,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
+import top.zhouy.frameboot.model.Product;
 import top.zhouy.frameboot.model.User;
+import top.zhouy.frameboot.repository.ProductRepository;
 import top.zhouy.frameboot.service.UserService;
 import top.zhouy.frameboot.util.RedisUtil;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,6 +31,9 @@ public class TestController {
     private RedisUtil redisUtil;
 
     protected final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @ApiOperation("根据主键id，获取用户信息")
     @ApiImplicitParam(name = "id", value = "主键id", paramType = "query" , dataType = "Integer")
@@ -62,9 +66,28 @@ public class TestController {
         return redisUtil.get(key);
     }
 
-    @ApiOperation("根据主键id，获取用户信息")
+    @ApiOperation(value = "保存用户信息")
     @PostMapping("/saveUser")
-    public Boolean saveUser(@ApiParam User user){
+    public Boolean saveUser(@ModelAttribute User user){
         return userService.saveUser(user);
+    }
+
+    @ApiOperation("保存商品信息")
+    @PostMapping("/saveProduct")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "productName", value = "商品名称", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "marketPrice", value = "价格", required = true, dataType = "BigDecimal", paramType = "query"),
+            @ApiImplicitParam(name = "id", value = "商品id", required = true, dataType = "Integer", paramType = "query")
+    })
+    public Boolean saveProduct(Product product){
+        productRepository.index(product);
+        return true;
+    }
+
+    @ApiOperation("根据主键id，获取用户信息")
+    @ApiImplicitParam(value = "商品名称", name = "name", paramType = "query", dataType = "String")
+    @PostMapping("/selProduct")
+    public List<Product> selProduct(String name){
+        return productRepository.findByProductNameLike(name);
     }
 }

@@ -1,9 +1,13 @@
 package top.zhouy.frameboot.model;
 
+import io.swagger.annotations.ApiModel;
+import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Document(indexName ="index_product",type = "product")
 public class Product implements Serializable {
     private Integer id;
 
