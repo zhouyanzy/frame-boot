@@ -12,7 +12,7 @@ Configuration:
         value: trace
       - name: log.path
         #日志文件存储的位置
-        value: /Users/Admin/Desktop/logs
+        value: /logs
       - name: project.name
         value: frame-boot # 项目名称
 

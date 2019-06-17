@@ -1,33 +1,18 @@
 package top.zhouy.frameboot.model;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import top.zhouy.frameboot.enums.Role;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.io.Serializable;
 
-@ApiModel(value = "用户信息实体类")
-public class User{
-
-    @ApiModelProperty(value = "主键id")
+public class User implements Serializable {
     private Integer id;
 
-    @ApiModelProperty(value = "姓名", required = true)
     private String name;
 
-    @ApiModelProperty(value = "密码", required = true)
     private String password;
 
-    @ApiModelProperty(value = "手机号", required = true)
     private String phone;
 
-    @ApiModelProperty(value = "角色", required = true)
     private Role role;
 
     public Integer getId() {
@@ -43,15 +28,15 @@ public class User{
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.name = name;
     }
 
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhone() {
@@ -59,7 +44,7 @@ public class User{
     }
 
     public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
+        this.phone = phone;
     }
 
     public Role getRole() {
