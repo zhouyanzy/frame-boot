@@ -11,6 +11,7 @@ import top.zhouy.frameboot.model.Product;
 import top.zhouy.frameboot.model.User;
 import top.zhouy.frameboot.repository.ProductRepository;
 import top.zhouy.frameboot.service.UserService;
+import top.zhouy.frameboot.util.RabbitmqSendUtil;
 import top.zhouy.frameboot.util.RedisUtil;
 
 import java.util.List;
@@ -34,6 +35,9 @@ public class TestController {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private RabbitmqSendUtil rabbitmqSendUtil;
 
     @ApiOperation("根据主键id，获取用户信息")
     @ApiImplicitParam(name = "id", value = "主键id", paramType = "query" , dataType = "Integer")
@@ -89,5 +93,17 @@ public class TestController {
     @PostMapping("/selProduct")
     public List<Product> selProduct(String name){
         return productRepository.findByProductNameLike(name);
+    }
+
+    @ApiOperation("发送mq消息")
+    @PostMapping("/sendMSG")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "content", value = "内容", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "exchange", value = "交换机", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "routingKey", value = "路由", required = false, dataType = "String", paramType = "query")
+    })
+    public Boolean sendMSG(String content, String exchange, String routingKey){
+        rabbitmqSendUtil.sendMsg(content, exchange, routingKey);
+        return true;
     }
 }
