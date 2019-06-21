@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.zhouy.frameboot.bean.AlipayOrderParam;
-import top.zhouy.frameboot.config.AliPayConfig;
+import top.zhouy.frameboot.config.AliPayConfiguration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,18 +38,18 @@ public class PayController {
     Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    AliPayConfig aliPayConfig;
+    AliPayConfiguration aliPayConfiguration;
 
     @ApiOperation(value = "alipayUrl")
     @PostMapping("/alipayUrl")
     public String doPost(@ApiParam @RequestParam String outTradeNo,@ApiParam @RequestParam String productCode,@ApiParam @RequestParam String productName,@ApiParam @RequestParam String totalAmount) throws ServletException, IOException {
         //获得初始化的AlipayClient
-        AlipayClient alipayClient = new DefaultAlipayClient(aliPayConfig.getGatewayUrl(), aliPayConfig.getAppID(), aliPayConfig.getMerchantPrivateKey(), aliPayConfig.getFormat(), aliPayConfig.getCharset(), aliPayConfig.getAlipayPublicKey(), aliPayConfig.getSignType());
+        AlipayClient alipayClient = new DefaultAlipayClient(aliPayConfiguration.getGatewayUrl(), aliPayConfiguration.getAppID(), aliPayConfiguration.getMerchantPrivateKey(), aliPayConfiguration.getFormat(), aliPayConfiguration.getCharset(), aliPayConfiguration.getAlipayPublicKey(), aliPayConfiguration.getSignType());
         //创建API对应的request
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
 
         //在公共参数中设置回跳和通知地址
-        alipayRequest.setNotifyUrl(aliPayConfig.getNotifyUrl());
+        alipayRequest.setNotifyUrl(aliPayConfiguration.getNotifyUrl());
         //alipayRequest.setReturnUrl(aliPayConfig.getReturnUrl());
 
         AlipayOrderParam alipayOrderParam = new AlipayOrderParam();
@@ -109,7 +109,7 @@ public class PayController {
         //调用SDK验证签名
         boolean signVerified = false;
         try {
-            signVerified = AlipaySignature.rsaCheckV1(params, aliPayConfig.getAlipayPublicKey(), aliPayConfig.getCharset(), aliPayConfig.getSignType());
+            signVerified = AlipaySignature.rsaCheckV1(params, aliPayConfiguration.getAlipayPublicKey(), aliPayConfiguration.getCharset(), aliPayConfiguration.getSignType());
         } catch (AlipayApiException e) {
             log.error("【支付宝异步通知】支付宝回调通知失败 e={} params={}", e, params);
             responseBody(response, resultFail);

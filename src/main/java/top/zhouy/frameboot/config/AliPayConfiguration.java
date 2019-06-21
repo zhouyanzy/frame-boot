@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  */
 @ConfigurationProperties(prefix = "alipay")
 @Component
-public class AliPayConfig {
+public class AliPayConfiguration {
 
     /**
      * 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号
