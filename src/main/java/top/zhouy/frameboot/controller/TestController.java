@@ -13,6 +13,7 @@ import top.zhouy.frameboot.repository.ProductRepository;
 import top.zhouy.frameboot.service.UserService;
 import top.zhouy.frameboot.util.RabbitmqSendUtil;
 import top.zhouy.frameboot.util.RedisUtil;
+import top.zhouy.frameboot.util.RocketmqProducerService;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -104,6 +105,19 @@ public class TestController {
     })
     public Boolean sendMSG(String content, String exchange, String routingKey){
         rabbitmqSendUtil.sendMsg(content, exchange, routingKey);
+        return true;
+    }
+
+    @Autowired
+    RocketmqProducerService rocketmqProducerService;
+
+    @ApiOperation("发送mq消息，rocketMq")
+    @PostMapping("/sendMSGRocketMq")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "content", value = "内容", required = true, dataType = "String", paramType = "query")
+    })
+    public Boolean sendMSGRocketMq(String content){
+        rocketmqProducerService.sendMsg(content);
         return true;
     }
 }

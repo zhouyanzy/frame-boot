@@ -75,3 +75,18 @@ alipay:
   gatewayUrl: https://openapi.alipaydev.com/gateway.do
   returnUrl: https://5ab30025.ngrok.io/pay/returnUrl
   notifyUrl: https://5ab30025.ngrok.io/pay/alipayNotify
+
+#配置rocketmq
+rocketmq:
+  producer:
+    groupId: GID_ZHOUY
+    msgTopic: ZHOUY
+    accessKey: LTAIx3cMrsedMVJn
+    secretKey: YPsWAqlX5loU0yyzalG6UnbpxXDpwA
+    onsAddr: http://MQ_INST_1734541766811600_Ba756HHE.mq-internet-access.mq-internet.aliyuncs.com:80
+  consumer:
+    groupId: GID_ZHOUY
+    msgTopic: ZHOUY
+    accessKey: LTAIx3cMrsedMVJn
+    secretKey: YPsWAqlX5loU0yyzalG6UnbpxXDpwA
+    onsAddr: http://MQ_INST_1734541766811600_Ba756HHE.mq-internet-access.mq-internet.aliyuncs.com:80
